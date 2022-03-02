@@ -5,7 +5,7 @@ using std::cin;
 
 int* indices = nullptr;
 
-int n = 8;
+const int n = 8;
 
 void printBoard()
 {
@@ -29,17 +29,16 @@ void printBoard()
 
 bool set(const int& y, const int& x)
 {
-	int i;
 
-	for (i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)
 		if (indices[i] == x)
 			return false;
 
-	for (i = (y - x > -1) ? 0 : (x - y); i < x + 1; i++)
+	for (int i = (y - x > -1) ? 0 : (x - y); i < x + 1; i++)
 		if (indices[i + y - x] == i)
 			return false;
 
-	for (i = x; i < ((x + y < n) ? (x + y + 1) : n); i++)
+	for (int i = x; i < ((x + y < n) ? (x + y + 1) : n); i++)
 		if (indices[-i + x + y] == i)
 			return false;
 
