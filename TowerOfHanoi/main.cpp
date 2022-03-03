@@ -19,6 +19,6 @@ void move(const int& n, const char& a, const char& b, const char& c)
 
 int main()
 {
-	move(3, 'A', 'B', 'C');
+	move(16, 'A', 'B', 'C');
 	return 0;
 }
