@@ -75,7 +75,7 @@ void DFS(Point* const point)//[x][y]
 
 int main()
 {
-	List* points = new List();
+	List<Point>* points = new List<Point>();
 
 	chrono::high_resolution_clock timer;
 
@@ -93,7 +93,7 @@ int main()
 		{
 			if (matrix[i][j] == 0)
 			{
-				points->addNode(i, j);
+				points->addPoint(new Point(i, j));
 			}
 		}
 	}

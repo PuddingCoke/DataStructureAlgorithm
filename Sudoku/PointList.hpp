@@ -10,22 +10,23 @@ struct Point
 	Point* prev = nullptr;
 };
 
+template<typename Node>
 struct List
 {
 	List() :length(0), head(nullptr), cur(nullptr) {}
 
-	void addNode(const int& x,const int& y)
+	void addPoint(Node* const node)
 	{
 		if (length)
 		{
-			cur->next = new Point(x, y);
+			cur->next = node;
 			cur->next->prev = cur;
 			cur = cur->next;
 			cur->next = nullptr;
 		}
 		else
 		{
-			head = new Point(x, y);
+			head = node;
 			cur = head;
 			head->prev = nullptr;
 			head->next = nullptr;
@@ -35,7 +36,7 @@ struct List
 
 	~List()
 	{
-		Point* temp = head;
+		Node* temp = head;
 		while (head)
 		{
 			temp = temp->next;
@@ -45,11 +46,12 @@ struct List
 	}
 
 	int length;
-	Point* head;
-	Point* cur;
+	Node* head;
+	Node* cur;
 };
 
-void foreach(List* const list, void (*func)(Point* const))
+template<typename Node>
+void foreach(List<Node>* const list, void (*func)(Point* const))
 {
 	for (Point* point = list->head; point != nullptr; point = point->next)
 	{
