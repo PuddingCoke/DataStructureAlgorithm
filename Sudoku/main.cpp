@@ -1,6 +1,7 @@
 #include<iostream>
-#include<vector>
 #include<chrono>
+
+#include"PointList.hpp"
 
 using namespace std;
 
@@ -17,14 +18,6 @@ int matrix[9][9] =
 	{0,9,0,0,0,0,4,0,0}
 };
 
-class Point
-{
-public:
-	Point(const int& x, const int& y) :x(x), y(y) {}
-	const int x;
-	const int y;
-};
-
 void printMatrix()
 {
 	for (size_t i = 0; i < 9; i++)
@@ -38,12 +31,10 @@ void printMatrix()
 	cout << "\n";
 }
 
-vector<Point> points;
-
-void DFS(size_t index)//[x][y]
+void DFS(Point* const point)//[x][y]
 {
-	const int& x = points[index].x;
-	const int& y = points[index].y;
+	const int& x = point->x;
+	const int& y = point->y;
 
 	for (int i = matrix[x][y] + 1; i < 10; i++)//遍历行列以及九宫格
 	{
@@ -59,13 +50,13 @@ void DFS(size_t index)//[x][y]
 
 		//有可放置的数字
 
-		if (!flags) {
+		if (!flags) 
+		{
 			matrix[x][y] = i;
-			if (++index == points.size())//是否完成
+			if (point->next)
 			{
-				return;
+				DFS(point->next);//遍历下一个空格
 			}
-			DFS(index);//遍历下一个空格
 			return;
 		}
 
@@ -73,13 +64,19 @@ void DFS(size_t index)//[x][y]
 
 	//没有可放置的数字
 	matrix[x][y] = 0;
-	DFS(--index);
+
+	if (point->prev)
+	{
+		DFS(point->prev);
+	}
 
 	return;
 }
 
 int main()
 {
+	List* points = new List();
+
 	chrono::high_resolution_clock timer;
 
 	std::chrono::steady_clock::time_point timeStart;
@@ -96,19 +93,22 @@ int main()
 		{
 			if (matrix[i][j] == 0)
 			{
-				points.push_back(Point(i, j));
+				points->addNode(i, j);
 			}
 		}
 	}
 
-	DFS(0);
+	DFS(points->head);
 
 	timeEnd = timer.now();
+
+	delete points;
 
 	printMatrix();
 
 	cout << "Time " << chrono::duration_cast<std::chrono::milliseconds>(timeEnd - timeStart).count() << "ms\n";
 
 	cin.get();
+
 	return 0;
 }
